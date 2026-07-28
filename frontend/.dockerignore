@@ -1,0 +1,14 @@
+# Dependências e artefatos de build local — não vão para a imagem
+node_modules/
+dist/
+
+# Ambiente e logs
+.env
+.env.local
+npm-debug.log*
+
+# O próprio Docker e metadados de IDE
+Dockerfile
+.dockerignore
+.vscode/
+.vs/
