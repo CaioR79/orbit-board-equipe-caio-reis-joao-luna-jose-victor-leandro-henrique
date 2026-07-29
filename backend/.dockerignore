@@ -1,0 +1,11 @@
+# Artefatos de compilação local — não devem ir para a imagem
+**/bin/
+**/obj/
+
+# Metadados de IDE
+.vs/
+.vscode/
+
+# O próprio Docker
+Dockerfile
+.dockerignore

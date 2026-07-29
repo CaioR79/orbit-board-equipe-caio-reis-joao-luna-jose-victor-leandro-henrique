@@ -1,0 +1,34 @@
+services:
+  # ============================================================
+  # BACKEND — API .NET 8
+  # ============================================================
+  backend:
+    build:
+      context: ./backend        # a raiz do build é a pasta backend/
+      dockerfile: Dockerfile
+    container_name: orbitboard-backend
+    ports:
+      - "5200:8080"             # host 5200 → container 8080
+    environment:
+      # Sobrescreve o CORS: libera a origem onde o frontend será acessado.
+      # Note o DUPLO underscore (Cors__AllowedOrigins) = "Cors:AllowedOrigins" no .NET.
+      - Cors__AllowedOrigins=http://localhost:5173
+
+  # ============================================================
+  # FRONTEND — React/Vite servido por Nginx
+  # ============================================================
+  frontend:
+    build:
+      context: ./frontend       # a "raiz" do build é a pasta frontend/
+      dockerfile: Dockerfile
+      args:
+        # A URL da API entra como BUILD ARG,
+        # porque o Vite "assa" esse valor durante o npm run build.
+        # Aponta para o HOST, pois quem chama a API
+        # é o NAVEGADOR do usuário, não o container do frontend.
+        VITE_API_URL: http://localhost:5200
+    container_name: orbitboard-frontend
+    ports:
+      - "5173:80"               # host 5173 → container 80 (Nginx)
+    depends_on:
+      - backend
